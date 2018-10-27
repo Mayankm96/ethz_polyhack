@@ -22,10 +22,13 @@ include_directories(
   include
 )
 
+##################################
+
 add_executable(takeoff_and_land
     src/takeoff_and_land.cpp
     src/beehaving_drones/BaseDrone.cpp
     src/beehaving_drones/Common.cpp
+    src/beehaving_drones/Console.cpp
     src/beehaving_drones/CommonStruct.cpp
     src/trajectories/generate_trajectories.cc
 )
@@ -33,5 +36,23 @@ add_executable(takeoff_and_land
 target_link_libraries(takeoff_and_land
     dronecore
     dronecore_telemetry
+    dronecore_mission
+    dronecore_action
+)
+
+##################################
+
+add_executable(follow_mission
+    src/follow_mission.cpp
+    src/beehaving_drones/BaseDrone.cpp
+    src/beehaving_drones/Common.cpp
+    src/beehaving_drones/Console.cpp
+    src/beehaving_drones/CommonStruct.cpp
+)
+
+target_link_libraries(follow_mission
+    dronecore
+    dronecore_telemetry
+    dronecore_mission
     dronecore_action
 )
