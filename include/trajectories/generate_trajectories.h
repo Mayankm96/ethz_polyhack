@@ -14,4 +14,10 @@ namespace trajectories
 
   // Helical path
   std::vector<Vector3r> generate_helical_path(double rate, double r1, double r2, double l, long int num_of_waypoints = 1000, Vector3r origin = Vector3r(0, 0, 0));
+  // Epicycloid path:
+  // a and b are constants of the parametric equations:
+  // x(t) = (a+b)*cos(t)-b*cos((a/b+1)t);
+  // y(t) = (a+b)*sin(t)-b*sin((a/b+1)t);
+  std::vector<Vector3r> generate_epicycloidal_path(double a=3, double b=2, long int num_of_waypoints = 1000, Vector3r origin = Vector3r(0, 0, 0));
+
 };
