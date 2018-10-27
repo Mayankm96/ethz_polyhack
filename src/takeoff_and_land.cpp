@@ -1,4 +1,4 @@
-#include <BaseDrone.h>
+#include <DogDrone.h>
 
 void usage(std::string bin_name)
 {
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    BaseDrone drone(connection_url);
+    DogDrone drone(connection_url);
 
     if(drone.start_connection(1))
       return 1;
