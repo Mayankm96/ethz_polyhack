@@ -14,6 +14,7 @@ int main(int argc, char **argv)
 {
     // take input string
     std::string connection_url;
+
     if (argc == 2) {
         connection_url = argv[1];
     } else {
@@ -23,13 +24,7 @@ int main(int argc, char **argv)
 
     BaseDrone drone(connection_url);
 
-    if(drone.check_connection())
-      return 1;
-
-    if(drone.discover_system())
-      return 1;
-
-    if(drone.enable_telemtry())
+    if(drone.start_connection(1))
       return 1;
 
     if(drone.takeoff())

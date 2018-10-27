@@ -110,13 +110,13 @@ bool BaseDrone::enable_arm()
   return 0;
 }
 
-
 // takeoff drone
 bool BaseDrone::takeoff()
 {
   // Take off
   std::cout << "Taking off..." << std::endl;
   const ActionResult takeoff_result = action_->takeoff();
+
   if (takeoff_result != ActionResult::SUCCESS)
   {
       std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << action_result_str(takeoff_result)
@@ -144,5 +144,24 @@ bool BaseDrone::landing()
       sleep_for(seconds(1));
   }
   std::cout << "Landed!" << std::endl;
+  return 0;
+}
+
+// simplfy performs arming and checks for connection;
+bool BaseDrone::start_connection(bool flag_telemtry)
+{
+  if(check_connection())
+    return 1;
+
+  if(discover_system())
+    return 1;
+
+  if (flag_telemtry)
+    if(enable_telemtry())
+      return 1;
+
+  if(enable_arm())
+      return 1;
+
   return 0;
 }

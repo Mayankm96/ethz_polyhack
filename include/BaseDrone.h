@@ -49,6 +49,8 @@ class BaseDrone
     // land drone
     bool landing();
 
+    // simplfy performs arming and checks for connection;
+    bool start_connection(bool flag_telemtry = 0);
 };
 
 #endif
