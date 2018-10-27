@@ -48,6 +48,7 @@ add_executable(follow_mission
     src/beehaving_drones/Common.cpp
     src/beehaving_drones/Console.cpp
     src/beehaving_drones/CommonStruct.cpp
+    src/trajectories/generate_trajectories.cc
 )
 
 target_link_libraries(follow_mission
