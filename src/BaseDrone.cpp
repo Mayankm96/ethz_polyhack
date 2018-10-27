@@ -165,3 +165,15 @@ bool BaseDrone::start_connection(bool flag_telemtry)
 
   return 0;
 }
+
+// get home geopoint
+GeoPoint BaseDrone::get_home_geopoint()
+{
+  // Set up callback to monitor altitude while the vehicle is in flight
+  telemetry_->position_async([](Telemetry::Position position)
+  {
+      return GeoPoint(position.latitude_deg, position.longitude_deg, position.relative_altitude_m);
+  });
+
+  return GeoPoint(0, 0, 0);
+}

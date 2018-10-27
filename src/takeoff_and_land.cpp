@@ -27,6 +27,9 @@ int main(int argc, char **argv)
     if(drone.start_connection(1))
       return 1;
 
+    GeoPoint home = drone.get_home_geopoint();
+    std::cout << home.to_string();
+
     if(drone.takeoff())
       return 1;
 
