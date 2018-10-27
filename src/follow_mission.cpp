@@ -1,10 +1,12 @@
 #include <beehaving_drones/BaseDrone.h>
 #include <beehaving_drones/Console.h>
-#include <dronecore/mission.h>
+#include <trajectories/generate_trajectories.h>
+
 #include <functional>
 #include <future>
 #include <iostream>
 #include <memory>
+#include <string>
 
 void usage(std::string bin_name)
 {
@@ -35,33 +37,6 @@ std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
     return new_item;
 }
 
-std::vector<Vector3r> return_helical(Vector3r origin, double rate, double r1, double r2, double l, long int num_of_waypoints)
-{
-  std::vector<Vector3r> path;
-  double t = 0;
-  double increment_rate = 1.0f/num_of_waypoint;
-  while( t < 1)
-  {
-    path.push_back(Vector3r(origin.x + r1 * cos(t * rate), origin.y + r2 * sin(t * rate), -(abs(origin.z) + t * l)));
-    t = t + increment_rate;
-  }
-
-  return path;
-}
-
-std::vector<Vector3r> return_square(Vector3r origin, double length)
-{
-  std::vector<Vector3r> path;
-  // square
-  path.push_back(origin);
-  path.push_back(Vector3r(origin.x, origin.y + length, origin.z));
-  path.push_back(Vector3r(origin.x + length, origin.y + length, -5));
-  path.push_back(Vector3r(origin.x + length, origin.y, origin.z));
-  path.push_back(Vector3r(origin.x, origin.y, origin.z));
-
-  return path;
-}
-
 int main(int argc, char **argv)
 {
     // take input string
@@ -88,11 +63,12 @@ int main(int argc, char **argv)
     // Let it hover for a bit before landing again.
     sleep_for(seconds(10));
 
-    // // follow a mission path
-    // std::vector<Vector3r> path = return_helical();
-    // drone.perform_mission(path, 2);
+    std::vector <Vector3r> path = trajectories::generate_straight_line(Vector3r(5, 5, -5));
 
-    sleep_for(seconds(5));
+    std::cout << "Performing straight line mission" << std::endl;
+    drone.perform_mission(path);
+
+    sleep_for(seconds(10));
 
     drone.return_to_home();
 

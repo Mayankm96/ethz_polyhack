@@ -1,4 +1,6 @@
+#include <beehaving_drones/DogDrone.h>
 #include <beehaving_drones/BaseDrone.h>
+#include <trajectories/generate_trajectories.h>
 
 void usage(std::string bin_name)
 {
@@ -22,7 +24,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    BaseDrone drone(connection_url);
+    DogDrone drone(connection_url);
 
     if(drone.start_connection(0))
       return 1;
