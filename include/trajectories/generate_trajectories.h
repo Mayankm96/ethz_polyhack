@@ -3,7 +3,6 @@
 
 namespace trajectories{
 // Straight line trajectory
-void generate_straight_line(std::vector <Vector3r> *out_waypoints);
-
+std::vector <Vector3r> generate_straight_line();
 
 };

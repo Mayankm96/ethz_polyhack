@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     std::vector <Vector3r> waypoints;
     std::string txt_file = "/home/suriro/ethz_polyhack/trajectories_xy_heart.txt";
     std::cout << "Extracting trajectory from file " << txt_file << std::endl;
-    trajectories::read_trajectory_from_txt(txt_file, &waypoints);
+    waypoints = trajectories::read_trajectory_from_txt(txt_file);
 
     std::cout << "Printing waypoints files:" << std::endl;
 
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     }
 
 
-    trajectories::generate_straight_line(&waypoints);
+    waypoints = trajectories::generate_straight_line();
     /*std::vector<Vector3r> waypoints;
 
     // square

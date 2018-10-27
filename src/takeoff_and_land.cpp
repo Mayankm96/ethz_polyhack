@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     std::cout << "Finished..." << std::endl;
 
     std::vector <Vector3r> test_waypoints;
-    trajectories::generate_straight_line(&test_waypoints);
+    trajectories::generate_straight_line();
 
     Vector3r app_waypoint;
 
