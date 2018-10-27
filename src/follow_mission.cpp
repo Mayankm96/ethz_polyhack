@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     waypoints.push_back(Vector3r(10, 0, -5));
 
     path = return_helical();
-    drone.perform_mission(path);
+    drone.perform_mission(path, 2);
 
     sleep_for(seconds(10));
 

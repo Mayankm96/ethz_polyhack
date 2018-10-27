@@ -215,7 +215,7 @@ std::shared_ptr<MissionItem> BaseDrone::make_mission_item(GeoPoint waypoint,
 }
 
 // convert vector of NED coordinates into mission task
-std::vector<std::shared_ptr<MissionItem>> BaseDrone::plan_mission_from_ned(std::vector<Vector3r> ned_waypoints)
+std::vector<std::shared_ptr<MissionItem>> BaseDrone::plan_mission_from_ned(std::vector<Vector3r> ned_waypoints, float speed_m_s, bool is_fly_through )
 {
   if(ned_waypoints.empty())
   {
@@ -230,10 +230,10 @@ std::vector<std::shared_ptr<MissionItem>> BaseDrone::plan_mission_from_ned(std::
   {
     GeoPoint point = nedToGeodeticFast(*it, home);
     mission_items.push_back(make_mission_item(point,
-                                              0.5f,
-                                              false,
-                                              20.0f,
-                                              60.0f,
+                                              speed_m_s,
+                                              is_fly_through,
+                                              0.0f,
+                                              0.0f,
                                               MissionItem::CameraAction::NONE));
   }
 
@@ -241,14 +241,14 @@ std::vector<std::shared_ptr<MissionItem>> BaseDrone::plan_mission_from_ned(std::
 }
 
 // perform mission
-bool BaseDrone::perform_mission(std::vector<Vector3r> ned_waypoints)
+bool BaseDrone::perform_mission(std::vector<Vector3r> ned_waypoints, float speed_m_s, bool is_fly_through)
 {
   System &system = dc_.system();
   auto mission = std::make_shared<Mission>(system);
 
   // convert ned coordinates to mission items
   std::vector<std::shared_ptr<MissionItem>> mission_items;
-  mission_items = plan_mission_from_ned(ned_waypoints);
+  mission_items = plan_mission_from_ned(ned_waypoints, speed_m_s, is_fly_through);
 
   // upload mission
   {
