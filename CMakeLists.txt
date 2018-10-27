@@ -16,8 +16,15 @@ endif()
 ## Build ##
 ###########
 
+## Specify additional locations of header files
+## Your package locations should be listed before other locations
+include_directories(
+  include
+)
+
 add_executable(takeoff_and_land
     src/takeoff_and_land.cpp
+    src/BaseDrone.cpp
 )
 
 target_link_libraries(takeoff_and_land
