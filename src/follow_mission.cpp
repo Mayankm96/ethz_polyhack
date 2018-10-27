@@ -65,14 +65,14 @@ int main(int argc, char **argv)
 
     std::vector <Vector3r> path;
     // path = trajectories::generate_straight_line(Vector3r(5, 5, -5));
-    path = trajectories::generate_helical_path(10, 3, 3, 5, 500, Vector3r(0, 0, -6));
+    path = trajectories::generate_helical_path(10, 3, 3, 5, 1000, Vector3r(0, 0, -6));
 
     std::cout << "Performing straight line mission" << std::endl;
     drone.perform_mission(path, 2.0);
 
-    sleep_for(seconds(10));
+    sleep_for(seconds(150));
 
-    drone.return_to_home();
+    // drone.return_to_home();
 
     if(drone.landing())
       return 1;

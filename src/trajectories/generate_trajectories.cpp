@@ -59,8 +59,8 @@ std::vector<Vector3r> trajectories::generate_helical_path(double rate, double r1
   std::vector<Vector3r> path;
   double t = 0;
   double increment_rate = 1.0f/num_of_waypoints;
-  
-  while( t < 1)
+
+  while( t < 3)
   {
     // path.push_back(Vector3r(origin.x + r1 * cos(t * rate), origin.y + r2 * sin(t * rate), origin.z - t * l));
     path.push_back(Vector3r(origin.x + t * l, origin.y + r2 * sin(t * rate), origin.z - r1 * cos(t * rate)));
