@@ -9,6 +9,8 @@
 #include <iostream>
 #include <thread>
 
+#include <CommonStruct.h>
+
 using namespace dronecore;
 using namespace std::this_thread;
 using namespace std::chrono;
@@ -51,6 +53,10 @@ class BaseDrone
 
     // simplfy performs arming and checks for connection;
     bool start_connection(bool flag_telemtry = 0);
+
+    // get home geopoint
+    GeoPoint get_home_geopoint();
+
 };
 
 #endif
