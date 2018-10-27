@@ -61,6 +61,11 @@ int main(int argc, char **argv)
     // Let it hover for a bit before landing again.
     sleep_for(seconds(10));
 
+    std::vector<Vector3r> waypoints;
+    drone.perform_mission(waypoints);
+
+    sleep_for(seconds(10));
+
     if(drone.landing())
       return 1;
 

@@ -11,6 +11,7 @@
 #include <thread>
 
 #include <beehaving_drones/Common.h>
+#include <beehaving_drones/Console.h>
 #include <beehaving_drones/CommonStruct.h>
 
 using namespace dronecore;
@@ -66,6 +67,12 @@ class BaseDrone
                                                    float gimbal_pitch_deg,
                                                    float gimbal_yaw_deg,
                                                    MissionItem::CameraAction camera_action = MissionItem::CameraAction::NONE);
+
+    // convert vector of NED coordinates into mission task
+    std::vector<std::shared_ptr<MissionItem>> plan_mission_from_ned(std::vector<Vector3r> waypoints);
+
+    // perform mission
+    bool perform_mission(std::vector<Vector3r> waypoints);
 };
 
 #endif
