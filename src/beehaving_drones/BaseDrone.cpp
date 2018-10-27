@@ -1,4 +1,4 @@
-#include <BaseDrone.h>
+#include <beehaving_drones/BaseDrone.h>
 
 // constructor for class
 BaseDrone::BaseDrone(std::string connection_url) : dc_()
@@ -164,12 +164,4 @@ bool BaseDrone::start_connection(bool flag_telemtry)
       return 1;
 
   return 0;
-}
-
-// get home geopoint
-GeoPoint BaseDrone::get_home_geopoint()
-{
-  // Set up callback to monitor altitude while the vehicle is in flight
-  Telemetry::Position position = telemetry_->home_position();
-  return GeoPoint(position.latitude_deg, position.longitude_deg, position.relative_altitude_m);
 }
