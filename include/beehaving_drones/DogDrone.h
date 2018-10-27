@@ -11,6 +11,7 @@ class DogDrone : public BaseDrone
     // constructor for class to check connection
     DogDrone(std::string connection_url): BaseDrone(connection_url) {};
     DogDrone() : BaseDrone() {};
+
 };
 
 
