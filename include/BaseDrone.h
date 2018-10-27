@@ -10,6 +10,7 @@
 #include <thread>
 
 #include <CommonStruct.h>
+#include <Common.h>
 
 using namespace dronecore;
 using namespace std::this_thread;

@@ -27,18 +27,10 @@ using namespace std;
 
 namespace utils
 {
-  double degreesToRadians(double degrees) {
-      return static_cast<double>(M_PIl * degrees / 180.0);
-  }
-  float degreesToRadians(float degrees) {
-      return static_cast<float>(M_PI * degrees / 180.0f);
-  }
-  double radiansToDegrees(double radians) {
-      return static_cast<double>(radians * 180.0 / M_PIl);
-  }
-  float radiansToDegrees(float radians) {
-      return static_cast<float>(radians * 180.0f / M_PI);
-  }
+  double degreesToRadians(double degrees);
+  float degreesToRadians(float degrees);
+  double radiansToDegrees(double radians);
+  float radiansToDegrees(float radians);
 }
 
 struct GeoPoint
@@ -90,11 +82,5 @@ struct Vector3r
       return std::to_string(x) + string(", ") + std::to_string(y) + string(", ") + std::to_string(z);
   }
 };
-
-//below are approximate versions and would produce errors of more than 10m for points farther than 1km
-//for more accurate versions, please use the version in EarthUtils::nedToGeodetic
-Vector3r GeodeticToNedFast(const GeoPoint& geo, const GeoPoint& home);
-
-GeoPoint nedToGeodeticFast(const Vector3r& local, const GeoPoint& home);
 
 #endif
