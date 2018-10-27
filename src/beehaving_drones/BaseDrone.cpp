@@ -272,9 +272,14 @@ bool BaseDrone::perform_mission(std::vector<Vector3r> ned_waypoints)
     });
 
     const Mission::Result result = future_result.get();
-    handle_mission_err_exit(result, "Mission start failed: ");
+    if (result != Mission::Result::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << "Mission start failed:" << Mission::result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
   }
 
+  // Wait for mission to finish
   while (!mission->mission_finished()) {
       sleep_for(seconds(1));
   }
