@@ -175,6 +175,19 @@ bool BaseDrone::start_connection(bool flag_telemtry)
   return 0;
 }
 
+bool BaseDrone::return_to_home()
+{
+  std::cout << "Commanding RTL..." << std::endl;
+  const ActionResult result = action_->return_to_launch();
+  if (result != ActionResult::SUCCESS) {
+      std::cout << "Failed to command RTL (" << action_result_str(result) << ")" << std::endl;
+      return 1;
+  } else {
+      std::cout << "Commanded RTL." << std::endl;
+  }
+
+  return 0;
+}
 // get home geopoint
 GeoPoint BaseDrone::get_home_geopoint()
 {
@@ -204,18 +217,25 @@ std::shared_ptr<MissionItem> BaseDrone::make_mission_item(GeoPoint waypoint,
 // convert vector of NED coordinates into mission task
 std::vector<std::shared_ptr<MissionItem>> BaseDrone::plan_mission_from_ned(std::vector<Vector3r> ned_waypoints)
 {
-  std::cout << ned_waypoints.empty();
+  if(ned_waypoints.empty())
+  {
+    std::cerr << ERROR_CONSOLE_TEXT << "No waypoints provided!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
 
   std::vector<std::shared_ptr<MissionItem>> mission_items;
+  GeoPoint home = get_home_geopoint();
 
-  mission_items.push_back(make_mission_item(GeoPoint(47.398170327054473,
-                                            8.5456490218639658,
-                                            10.0f),
-                                            5.0f,
-                                            false,
-                                            20.0f,
-                                            60.0f,
-                                            MissionItem::CameraAction::NONE));
+  for(std::vector<Vector3r>::iterator it = ned_waypoints.begin(); it != ned_waypoints.end(); ++it)
+  {
+    GeoPoint point = nedToGeodeticFast(*it, home);
+    mission_items.push_back(make_mission_item(point,
+                                              0.5f,
+                                              false,
+                                              20.0f,
+                                              60.0f,
+                                              MissionItem::CameraAction::NONE));
+  }
 
   return mission_items;
 }

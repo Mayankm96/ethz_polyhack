@@ -57,6 +57,9 @@ class BaseDrone
     // simplfy performs arming and checks for connection;
     bool start_connection(bool flag_telemtry = 0);
 
+    // return to home
+    bool return_to_home();
+
     // get home geopoint
     GeoPoint get_home_geopoint();
 

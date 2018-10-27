@@ -62,9 +62,18 @@ int main(int argc, char **argv)
     sleep_for(seconds(10));
 
     std::vector<Vector3r> waypoints;
+
+    // square
+    waypoints.push_back(Vector3r(0, 0, -5));
+    waypoints.push_back(Vector3r(0, 10, -5));
+    waypoints.push_back(Vector3r(10, 10, -5));
+    waypoints.push_back(Vector3r(10, 0, -5));
+
     drone.perform_mission(waypoints);
 
     sleep_for(seconds(10));
+
+    drone.return_to_home();
 
     if(drone.landing())
       return 1;
