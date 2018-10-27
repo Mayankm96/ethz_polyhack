@@ -6,6 +6,8 @@
 #include <iostream>
 #include <memory>
 #include <trajectories/generate_trajectories.h>
+#include <trajectories/read_trajectories.h>
+#include <string>
 
 void usage(std::string bin_name)
 {
@@ -64,6 +66,21 @@ int main(int argc, char **argv)
 
 
     std::vector <Vector3r> waypoints;
+    std::string txt_file = "/home/suriro/ethz_polyhack/trajectories_xy_heart.txt";
+    std::cout << "Extracting trajectory from file " << txt_file << std::endl;
+    trajectories::read_trajectory_from_txt(txt_file, &waypoints);
+
+    std::cout << "Printing waypoints files:" << std::endl;
+
+    Vector3r app_waypoint;
+    for(unsigned int i = 0; i < waypoints.size(); ++i){
+      app_waypoint = waypoints[i];
+      std::cout << app_waypoint.x << " "
+                << app_waypoint.y << " "
+                << app_waypoint.z << std::endl;
+    }
+
+
     trajectories::generate_straight_line(&waypoints);
     /*std::vector<Vector3r> waypoints;
 
