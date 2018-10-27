@@ -1,5 +1,14 @@
 #include <beehaving_drones/BaseDrone.h>
 
+#include <functional>
+#include <future>
+#include <iostream>
+#include <memory>
+
+using namespace dronecore;
+using namespace std::this_thread;
+using namespace std::chrono;
+
 // constructor for class
 BaseDrone::BaseDrone(std::string connection_url) : dc_()
 {
@@ -166,10 +175,134 @@ bool BaseDrone::start_connection(bool flag_telemtry)
   return 0;
 }
 
+bool BaseDrone::return_to_home()
+{
+  std::cout << "Commanding RTL..." << std::endl;
+  const ActionResult result = action_->return_to_launch();
+  if (result != ActionResult::SUCCESS) {
+      std::cout << "Failed to command RTL (" << action_result_str(result) << ")" << std::endl;
+      return 1;
+  } else {
+      std::cout << "Commanded RTL." << std::endl;
+  }
+
+  return 0;
+}
 // get home geopoint
 GeoPoint BaseDrone::get_home_geopoint()
 {
   // Set up callback to monitor altitude while the vehicle is in flight
   Telemetry::Position position = telemetry_->home_position();
   return GeoPoint(position.latitude_deg, position.longitude_deg, position.relative_altitude_m);
+}
+
+// convert GeoPoint into mission item
+std::shared_ptr<MissionItem> BaseDrone::make_mission_item(GeoPoint waypoint,
+                                               float speed_m_s = 1.0,
+                                               bool is_fly_through = false,
+                                               float gimbal_pitch_deg = 0,
+                                               float gimbal_yaw_deg = 0,
+                                               MissionItem::CameraAction camera_action)
+{
+  std::shared_ptr<MissionItem> new_item(new MissionItem());
+  new_item->set_position(waypoint.latitude, waypoint.longitude);
+  new_item->set_relative_altitude(waypoint.altitude);
+  new_item->set_speed(speed_m_s);
+  new_item->set_fly_through(is_fly_through);
+  new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
+  new_item->set_camera_action(camera_action);
+  return new_item;
+}
+
+// convert vector of NED coordinates into mission task
+std::vector<std::shared_ptr<MissionItem>> BaseDrone::plan_mission_from_ned(std::vector<Vector3r> ned_waypoints)
+{
+  if(ned_waypoints.empty())
+  {
+    std::cerr << ERROR_CONSOLE_TEXT << "No waypoints provided!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  std::vector<std::shared_ptr<MissionItem>> mission_items;
+  GeoPoint home = get_home_geopoint();
+
+  for(std::vector<Vector3r>::iterator it = ned_waypoints.begin(); it != ned_waypoints.end(); ++it)
+  {
+    GeoPoint point = nedToGeodeticFast(*it, home);
+    mission_items.push_back(make_mission_item(point,
+                                              0.5f,
+                                              false,
+                                              20.0f,
+                                              60.0f,
+                                              MissionItem::CameraAction::NONE));
+  }
+
+  return mission_items;
+}
+
+// perform mission
+bool BaseDrone::perform_mission(std::vector<Vector3r> ned_waypoints)
+{
+  System &system = dc_.system();
+  auto mission = std::make_shared<Mission>(system);
+
+  // convert ned coordinates to mission items
+  std::vector<std::shared_ptr<MissionItem>> mission_items;
+  mission_items = plan_mission_from_ned(ned_waypoints);
+
+  // upload mission
+  {
+    std::cout << "Uploading mission..." << std::endl;
+    // We only have the upload_mission function asynchronous for now, so we wrap it using
+    // std::future.
+    auto prom = std::make_shared<std::promise<Mission::Result>>();
+    auto future_result = prom->get_future();
+    mission->upload_mission_async(mission_items,
+                                  [prom](Mission::Result result) { prom->set_value(result); });
+
+    const Mission::Result result = future_result.get();
+    if (result != Mission::Result::SUCCESS) {
+        std::cout << "Mission upload failed (" << Mission::result_str(result) << "), exiting."
+                  << std::endl;
+        return 1;
+    }
+    std::cout << "Mission uploaded." << std::endl;
+
+    std::atomic<bool> want_to_pause{false};
+    // Before starting the mission, we want to be sure to subscribe to the mission progress.
+    mission->subscribe_progress([&want_to_pause](int current, int total) {
+        std::cout << "Mission status update: " << current << " / " << total << std::endl;
+
+        if (current >= 2) {
+            // We can only set a flag here. If we do more request inside the callback,
+            // we risk blocking the system.
+            want_to_pause = true;
+        }
+    });
+  }
+
+  // Start mission
+  {
+    std::cout << "Starting mission." << std::endl;
+    auto prom = std::make_shared<std::promise<Mission::Result>>();
+    auto future_result = prom->get_future();
+    mission->start_mission_async([prom](Mission::Result result) {
+        prom->set_value(result);
+        std::cout << "Started mission." << std::endl;
+    });
+
+    const Mission::Result result = future_result.get();
+    if (result != Mission::Result::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << "Mission start failed:" << Mission::result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
+  }
+
+  // Wait for mission to finish
+  while (!mission->mission_finished()) {
+      sleep_for(seconds(1));
+  }
+
+  return 0;
 }
