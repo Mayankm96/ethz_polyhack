@@ -72,10 +72,10 @@ class BaseDrone
                                                    MissionItem::CameraAction camera_action = MissionItem::CameraAction::NONE);
 
     // convert vector of NED coordinates into mission task
-    std::vector<std::shared_ptr<MissionItem>> plan_mission_from_ned(std::vector<Vector3r> waypoints);
+    std::vector<std::shared_ptr<MissionItem>> plan_mission_from_ned(std::vector<Vector3r> waypoints, float speed_m_s = 0.5, bool is_fly_through = true);
 
     // perform mission
-    bool perform_mission(std::vector<Vector3r> waypoints);
+    bool perform_mission(std::vector<Vector3r> waypoints, float speed_m_s = 0.5, bool is_fly_through = true);
 };
 
 #endif
