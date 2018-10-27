@@ -35,6 +35,24 @@ std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
     return new_item;
 }
 
+std::vector<Vector3r> return_helical()
+{
+  std::vector<Vector3r> path;
+  double r1, r2, l;
+
+  r1 = 5;
+  r2 = 8;
+  l = 5;
+
+  double t = 0;
+  while( t < 1)
+  {
+    path.push_back(Vector3r(r1 * cos(t*15), r2 * sin(t * 15), -(2 + t*l)));
+    t = t + 0.001;
+  }
+  return path;
+}
+
 int main(int argc, char **argv)
 {
     // take input string
@@ -61,7 +79,7 @@ int main(int argc, char **argv)
     // Let it hover for a bit before landing again.
     sleep_for(seconds(10));
 
-    std::vector<Vector3r> waypoints;
+    std::vector<Vector3r> waypoints, path;
 
     // square
     waypoints.push_back(Vector3r(0, 0, -5));
@@ -69,7 +87,8 @@ int main(int argc, char **argv)
     waypoints.push_back(Vector3r(10, 10, -5));
     waypoints.push_back(Vector3r(10, 0, -5));
 
-    drone.perform_mission(waypoints);
+    path = return_helical();
+    drone.perform_mission(path);
 
     sleep_for(seconds(10));
 

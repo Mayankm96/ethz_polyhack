@@ -59,3 +59,15 @@ make
 ```bash
 ./takeoff_and_land udp://:14540
 ```
+
+## Visualization
+
+* Install ROS and dependecy packages for PX4
+* Launch the ROS node for interfacing with PX4 in SITL
+```bash
+roslaunch mavros px4.launch fcu_url:="udp://:14550@127.0.0.1:11345"
+```
+* Run rviz
+```bash
+rviz
+```
