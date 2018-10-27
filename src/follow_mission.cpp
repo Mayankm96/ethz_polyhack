@@ -63,10 +63,12 @@ int main(int argc, char **argv)
     // Let it hover for a bit before landing again.
     sleep_for(seconds(10));
 
-    std::vector <Vector3r> path = trajectories::generate_straight_line(Vector3r(5, 5, -5));
+    std::vector <Vector3r> path;
+    // path = trajectories::generate_straight_line(Vector3r(5, 5, -5));
+    path = trajectories::generate_helical_path(10, 3, 3, 5, 500, Vector3r(0, 0, -6));
 
     std::cout << "Performing straight line mission" << std::endl;
-    drone.perform_mission(path);
+    drone.perform_mission(path, 2.0);
 
     sleep_for(seconds(10));
 
