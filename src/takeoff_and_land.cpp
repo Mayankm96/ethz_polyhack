@@ -24,8 +24,11 @@ int main(int argc, char **argv)
 
     DogDrone drone(connection_url);
 
-    if(drone.start_connection(1))
+    if(drone.start_connection(0))
       return 1;
+
+    GeoPoint home = drone.get_home_geopoint();
+    std::cout << "Home:" << home.to_string() << std::endl;
 
     if(drone.takeoff())
       return 1;
