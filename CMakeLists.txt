@@ -24,9 +24,9 @@ include_directories(
 
 add_executable(takeoff_and_land
     src/takeoff_and_land.cpp
-    src/BaseDrone.cpp
-    src/CommonStruct.cpp
-    src/Common.cpp
+    src/beehaving_drones/BaseDrone.cpp
+    src/beehaving_drones/Common.cpp
+    src/beehaving_drones/CommonStruct.cpp
 )
 
 target_link_libraries(takeoff_and_land

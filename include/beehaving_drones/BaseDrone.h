@@ -9,8 +9,8 @@
 #include <iostream>
 #include <thread>
 
-#include <CommonStruct.h>
-#include <Common.h>
+#include <beehaving_drones/Common.h>
+#include <beehaving_drones/CommonStruct.h>
 
 using namespace dronecore;
 using namespace std::this_thread;
@@ -57,7 +57,6 @@ class BaseDrone
 
     // get home geopoint
     GeoPoint get_home_geopoint();
-
 };
 
 #endif

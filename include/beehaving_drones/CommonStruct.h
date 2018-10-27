@@ -24,7 +24,6 @@ using namespace std;
 
 #define EARTH_RADIUS (6378137.0f)
 
-
 namespace utils
 {
   double degreesToRadians(double degrees);
