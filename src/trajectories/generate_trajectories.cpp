@@ -59,11 +59,28 @@ std::vector<Vector3r> trajectories::generate_helical_path(double rate, double r1
   std::vector<Vector3r> path;
   double t = 0;
   double increment_rate = 1.0f/num_of_waypoints;
-  
+
   while( t < 1)
   {
     // path.push_back(Vector3r(origin.x + r1 * cos(t * rate), origin.y + r2 * sin(t * rate), origin.z - t * l));
     path.push_back(Vector3r(origin.x + t * l, origin.y + r2 * sin(t * rate), origin.z - r1 * cos(t * rate)));
+    t = t + increment_rate;
+  }
+
+  return path;
+}
+
+// Epicycloidal path
+std::vector<Vector3r> generate_epicycloidal_path(double a, double b, long int num_of_waypoints = 1000, Vector3r origin = Vector3r(0, 0, 0))
+{
+  std::vector<Vector3r> path;
+  double t = 0;
+  double increment_rate = 1.0f/num_of_waypoints;
+
+  while( t < 1)
+  {
+    path.push_back(Vector3r(origin.x + (a+b)*cos(t)-b*cos((a/b+1)*t), origin.y,
+                            origin.z + (a+b)*sin(t)-b*sin((a/b+1)*t)));
     t = t + increment_rate;
   }
 
