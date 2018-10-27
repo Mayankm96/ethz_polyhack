@@ -86,3 +86,22 @@ std::vector<Vector3r> trajectories::generate_epicycloidal_path(double a, double 
 
   return path;
 }
+
+// Lemniscate path:
+std::vector<Vector3r> trajectories::generate_lemniscate_path(double a, long int num_of_waypoints, Vector3r origin)
+{
+  std::vector<Vector3r> path;
+  double t = 0;
+  double increment_rate = 1.0f/num_of_waypoints;
+  double r;
+
+  while( t < 1)
+  {
+    r = sqrt(pow(a, 2)*cos(2*t)/pow(cos(t), 4));
+    path.push_back(Vector3r(origin.x +r*cos(t), origin.y,
+                            origin.z + r*sin(t)));
+    t = t + increment_rate;
+  }
+
+  return path;
+}
