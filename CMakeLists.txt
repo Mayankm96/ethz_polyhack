@@ -26,6 +26,7 @@ add_executable(takeoff_and_land
     src/takeoff_and_land.cpp
     src/BaseDrone.cpp
     src/CommonStruct.cpp
+    src/Common.cpp
 )
 
 target_link_libraries(takeoff_and_land
