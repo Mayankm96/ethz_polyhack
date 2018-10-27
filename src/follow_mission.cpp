@@ -35,21 +35,30 @@ std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
     return new_item;
 }
 
-std::vector<Vector3r> return_helical()
+std::vector<Vector3r> return_helical(Vector3r origin, double rate, double r1, double r2, double l, long int num_of_waypoints)
 {
   std::vector<Vector3r> path;
-  double r1, r2, l;
-
-  r1 = 5;
-  r2 = 8;
-  l = 5;
-
   double t = 0;
+  double increment_rate = 1.0f/num_of_waypoint;
   while( t < 1)
   {
-    path.push_back(Vector3r(r1 * cos(t*15), r2 * sin(t * 15), -(2 + t*l)));
-    t = t + 0.001;
+    path.push_back(Vector3r(origin.x + r1 * cos(t * rate), origin.y + r2 * sin(t * rate), -(abs(origin.z) + t * l)));
+    t = t + increment_rate;
   }
+
+  return path;
+}
+
+std::vector<Vector3r> return_square(Vector3r origin, double length)
+{
+  std::vector<Vector3r> path;
+  // square
+  path.push_back(origin);
+  path.push_back(Vector3r(origin.x, origin.y + length, origin.z));
+  path.push_back(Vector3r(origin.x + length, origin.y + length, -5));
+  path.push_back(Vector3r(origin.x + length, origin.y, origin.z));
+  path.push_back(Vector3r(origin.x, origin.y, origin.z));
+
   return path;
 }
 
@@ -79,18 +88,11 @@ int main(int argc, char **argv)
     // Let it hover for a bit before landing again.
     sleep_for(seconds(10));
 
-    std::vector<Vector3r> waypoints, path;
+    // // follow a mission path
+    // std::vector<Vector3r> path = return_helical();
+    // drone.perform_mission(path, 2);
 
-    // square
-    waypoints.push_back(Vector3r(0, 0, -5));
-    waypoints.push_back(Vector3r(0, 10, -5));
-    waypoints.push_back(Vector3r(10, 10, -5));
-    waypoints.push_back(Vector3r(10, 0, -5));
-
-    path = return_helical();
-    drone.perform_mission(path, 2);
-
-    sleep_for(seconds(10));
+    sleep_for(seconds(5));
 
     drone.return_to_home();
 
