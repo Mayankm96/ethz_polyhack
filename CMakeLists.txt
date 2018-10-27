@@ -27,6 +27,7 @@ add_executable(takeoff_and_land
     src/beehaving_drones/BaseDrone.cpp
     src/beehaving_drones/Common.cpp
     src/beehaving_drones/CommonStruct.cpp
+    src/trajectories/generate_trajectories.cc
 )
 
 target_link_libraries(takeoff_and_land

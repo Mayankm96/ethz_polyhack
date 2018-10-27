@@ -1,5 +1,6 @@
-#include <DogDrone.h>
+#include <beehaving_drones/DogDrone.h>
 #include <beehaving_drones/BaseDrone.h>
+#include <trajectories/generate_trajectories.h>
 
 void usage(std::string bin_name)
 {
@@ -43,6 +44,22 @@ int main(int argc, char **argv)
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
     sleep_for(seconds(3));
     std::cout << "Finished..." << std::endl;
+
+    std::vector <Vector3r> test_waypoints;
+    trajectories::generate_straight_line(&test_waypoints);
+
+    Vector3r app_waypoint;
+
+    std::cout << "Printing straight line waypoints:" << std::endl;
+
+    for(unsigned int i = 0; i < test_waypoints.size(); ++i){
+      app_waypoint = test_waypoints[i];
+      std::cout << app_waypoint.x << " "
+                << app_waypoint.y << " "
+                << app_waypoint.z << std::endl;
+    }
+
+
 
     return 0;
 }
