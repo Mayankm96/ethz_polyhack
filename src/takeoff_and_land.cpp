@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <DogDrone.h>
 #include <beehaving_drones/BaseDrone.h>
 
