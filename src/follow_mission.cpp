@@ -5,6 +5,7 @@
 #include <future>
 #include <iostream>
 #include <memory>
+#include <trajectories/generate_trajectories.h>
 
 void usage(std::string bin_name)
 {
@@ -61,14 +62,17 @@ int main(int argc, char **argv)
     // Let it hover for a bit before landing again.
     sleep_for(seconds(10));
 
-    std::vector<Vector3r> waypoints;
+
+    std::vector <Vector3r> waypoints;
+    trajectories::generate_straight_line(&waypoints);
+    /*std::vector<Vector3r> waypoints;
 
     // square
     waypoints.push_back(Vector3r(0, 0, -5));
     waypoints.push_back(Vector3r(0, 10, -5));
     waypoints.push_back(Vector3r(10, 10, -5));
-    waypoints.push_back(Vector3r(10, 0, -5));
-
+    waypoints.push_back(Vector3r(10, 0, -5));*/
+    std::cout << "Performing straight line mission" << std::endl;
     drone.perform_mission(waypoints);
 
     sleep_for(seconds(10));
