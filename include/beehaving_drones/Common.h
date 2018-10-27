@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <math.h>
 
+#include <beehaving_drones/CommonStruct.h>
 
 //below are approximate versions and would produce errors of more than 10m for points farther than 1km
 //for more accurate versions, please use the version in EarthUtils::nedToGeodetic

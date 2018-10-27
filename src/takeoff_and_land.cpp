@@ -1,4 +1,4 @@
-#include <BaseDrone.h>
+#include <beehaving_drones/BaseDrone.h>
 
 void usage(std::string bin_name)
 {
