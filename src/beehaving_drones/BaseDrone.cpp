@@ -1,4 +1,16 @@
 #include <beehaving_drones/BaseDrone.h>
+#include <dronecore/action.h>
+#include <dronecore/dronecore.h>
+#include <dronecore/mission.h>
+#include <dronecore/telemetry.h>
+#include <functional>
+#include <future>
+#include <iostream>
+#include <memory>
+
+using namespace dronecore;
+using namespace std::this_thread;
+using namespace std::chrono;
 
 // constructor for class
 BaseDrone::BaseDrone(std::string connection_url) : dc_()
@@ -172,4 +184,21 @@ GeoPoint BaseDrone::get_home_geopoint()
   // Set up callback to monitor altitude while the vehicle is in flight
   Telemetry::Position position = telemetry_->home_position();
   return GeoPoint(position.latitude_deg, position.longitude_deg, position.relative_altitude_m);
+}
+
+std::shared_ptr<MissionItem> BaseDrone::make_mission_item(GeoPoint waypoint,
+                                               float speed_m_s,
+                                               bool is_fly_through,
+                                               float gimbal_pitch_deg,
+                                               float gimbal_yaw_deg,
+                                               MissionItem::CameraAction camera_action)
+{
+    std::shared_ptr<MissionItem> new_item(new MissionItem());
+    new_item->set_position(waypoint.latitude, waypoint.longitude);
+    new_item->set_relative_altitude(waypoint.altitude);
+    new_item->set_speed(speed_m_s);
+    new_item->set_fly_through(is_fly_through);
+    new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
+    new_item->set_camera_action(camera_action);
+    return new_item;
 }

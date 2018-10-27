@@ -6,6 +6,7 @@
 #include <dronecore/action.h>
 #include <dronecore/dronecore.h>
 #include <dronecore/telemetry.h>
+#include <dronecore/mission.h>
 #include <iostream>
 #include <thread>
 
@@ -57,6 +58,14 @@ class BaseDrone
 
     // get home geopoint
     GeoPoint get_home_geopoint();
+
+    // convert GeoPoint into mission item
+    std::shared_ptr<MissionItem> make_mission_item(GeoPoint waypoint,
+                                                   float speed_m_s,
+                                                   bool is_fly_through,
+                                                   float gimbal_pitch_deg,
+                                                   float gimbal_yaw_deg,
+                                                   MissionItem::CameraAction camera_action = MissionItem::CameraAction::NONE);
 };
 
 #endif
