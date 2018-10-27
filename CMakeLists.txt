@@ -32,5 +32,6 @@ add_executable(takeoff_and_land
 target_link_libraries(takeoff_and_land
     dronecore
     dronecore_telemetry
+    dronecore_mission
     dronecore_action
 )
