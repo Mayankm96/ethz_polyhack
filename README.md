@@ -1,6 +1,8 @@
 # ethz_polyhack
 Repository for the drone hackathon: Polyhack
 
+__Contributors:__ Mayank Mittal, Francesco Milano, Yasser Belal
+
 ## Instructions to Setup
 
 ### PX4 and Gazebo
