@@ -109,22 +109,20 @@ std::vector<Vector3r> trajectories::generate_epitrochoidal_path(double a, double
 }
 
 // Lemniscate path:
-std::vector<Vector3r> trajectories::generate_lemniscate_path(double a, long int num_of_waypoints, Vector3r origin)
+std::vector<Vector3r> trajectories::generate_lemniscate_gerono_path(double a, long int num_of_waypoints, Vector3r origin)
 {
   std::vector<Vector3r> path;
   double t = 0;
   double increment_rate = 1.0f/num_of_waypoints;
   double r;
 
-  while( t < 2*M_PI)
+  while( t < 4*M_PI)
   {
-    if(abs(t - M_PI/2) < M_PI/10 || abs(t - 3*M_PI/2) < M_PI/10)
-    {
-      t = t + M_PI/10;
-    }
-    r = sqrt(pow(a, 2)*cos(2*t)/pow(cos(t), 4));
+    r = a;
+    // path.push_back(Vector3r(origin.x + r*cos(t), origin.y,
+    //                         origin.z - r*sin(t)));
     path.push_back(Vector3r(origin.x + r*cos(t), origin.y,
-                            origin.z - r*sin(t)));
+                            origin.z - r*sin(2*t)/2));
     t = t + increment_rate;
   }
 
@@ -138,11 +136,11 @@ std::vector<Vector3r> trajectories::generate_abs_sine_path(double amplitude, lon
     double t = 0;
     double increment_rate = 1.0f/num_of_waypoints;
 
-    while( t < 10*M_PI   )
+    while( t < 10*M_PI )
     {
-      path.push_back(Vector3r(origin.x + abs(amplitude*sin(t)),
-                              origin.y + t,
-                              origin.z));
+      path.push_back(Vector3r(origin.x + t,
+                              origin.y,
+                              origin.z - abs(amplitude*sin(t))));
       t = t + increment_rate;
     }
 
@@ -157,16 +155,33 @@ std::vector<Vector3r> trajectories::generate_fermat_path(double a, long int num_
   double increment_rate = 1.0f/num_of_waypoints;
   double r;
 
-  while( t < 4*M_PI )
+  while( t < 10*M_PI )
   {
     r = sqrt(pow(a, 2)*t);
     path.push_back(Vector3r(origin.x +r*cos(t), origin.y + r*sin(t),
+                            origin.z - 0.15 * t));
+    t = t + increment_rate;
+  }
+
+  return path;
+}
+
+// Hypocycloid path:
+std::vector<Vector3r> trajectories::generate_hypocycloid_path(double a, double b, long int num_of_waypoints, Vector3r origin)
+{
+  std::vector<Vector3r> path;
+  double t = 0;
+  double increment_rate = 1.0f/num_of_waypoints;
+
+  while( t < 10*M_PI )
+  {
+    double x = (a - b) * cos(t) + b * cos((a/b - 1) * t);
+    double y = (a - b) * sin(t) - b * sin((a/b - 1) * t);
+
+    path.push_back(Vector3r(origin.x + x, origin.y + y,
                             origin.z));
     t = t + increment_rate;
   }
 
   return path;
-
-
-
 }
