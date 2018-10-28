@@ -6,7 +6,7 @@
 #include <cmath>
 
 // Read waypoints from the txt files at in_path
-std::vector <Vector3r> trajectories::read_trajectory_from_txt(std::string in_path)
+std::vector <Vector3r> trajectories::read_trajectory_from_txt(std::string in_path, double scale)
 {
   std::ifstream in_file(in_path.c_str());
   if(!in_file)
@@ -27,7 +27,8 @@ std::vector <Vector3r> trajectories::read_trajectory_from_txt(std::string in_pat
                 << ": line not coherent." << std::endl;
       break;
     }
-    out_waypoints.push_back(Vector3r(x, y, - abs(z)));
+    // out_waypoints.push_back(Vector3r(scale * x, scale * y, - abs(z)));
+    out_waypoints.push_back(Vector3r(scale * x, scale * y, - abs(z)));
   }
   in_file.close();
 
