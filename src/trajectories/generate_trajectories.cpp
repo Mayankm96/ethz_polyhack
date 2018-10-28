@@ -27,7 +27,7 @@ std::vector <Vector3r> trajectories::read_trajectory_from_txt(std::string in_pat
                 << ": line not coherent." << std::endl;
       break;
     }
-    out_waypoints.push_back(Vector3r(x, y, z));
+    out_waypoints.push_back(Vector3r(x, y, - abs(z)));
   }
   in_file.close();
 
