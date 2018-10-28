@@ -1,8 +1,9 @@
 #include <trajectories/generate_trajectories.h>
+#include <beehaving_drones/CommonStruct.h>
 #include <fstream>
 #include <cmath>
 #include <sstream>
-#include <beehaving_drones/CommonStruct.h>
+#include <cmath>
 
 // Read waypoints from the txt files at in_path
 std::vector <Vector3r> trajectories::read_trajectory_from_txt(std::string in_path)
@@ -89,6 +90,24 @@ std::vector<Vector3r> trajectories::generate_epicycloidal_path(double a, double 
   return path;
 }
 
+// Epitrochoidal path
+std::vector<Vector3r> trajectories::generate_epitrochoidal_path(double a, double b, double c, long int num_of_waypoints, Vector3r origin)
+{
+  std::vector<Vector3r> path;
+  double t = 0;
+  double increment_rate = 1.0f/num_of_waypoints;
+
+  while( t < 2*M_PI   )
+  {
+    path.push_back(Vector3r(origin.x + 0.1*(a+b)*cos(t)-c*cos((a/b+1)*t),
+                            origin.y + 0.1*(a+b)*sin(t)-c*sin((a/b+1)*t),
+                            origin.z));
+    t = t + increment_rate;
+  }
+
+  return path;
+}
+
 // Lemniscate path:
 std::vector<Vector3r> trajectories::generate_lemniscate_path(double a, long int num_of_waypoints, Vector3r origin)
 {
@@ -110,4 +129,44 @@ std::vector<Vector3r> trajectories::generate_lemniscate_path(double a, long int 
   }
 
   return path;
+}
+
+// Abs sine path:
+std::vector<Vector3r> trajectories::generate_abs_sine_path(double amplitude, long int num_of_waypoints, Vector3r origin)
+{
+    std::vector<Vector3r> path;
+    double t = 0;
+    double increment_rate = 1.0f/num_of_waypoints;
+
+    while( t < 10*M_PI   )
+    {
+      path.push_back(Vector3r(origin.x + abs(amplitude*sin(t)),
+                              origin.y + t,
+                              origin.z));
+      t = t + increment_rate;
+    }
+
+    return path;
+}
+
+// Fermat path:
+std::vector<Vector3r> trajectories::generate_fermat_path(double a, long int num_of_waypoints, Vector3r origin)
+{
+  std::vector<Vector3r> path;
+  double t = 0;
+  double increment_rate = 1.0f/num_of_waypoints;
+  double r;
+
+  while( t < 4*M_PI )
+  {
+    r = sqrt(pow(a, 2)*t);
+    path.push_back(Vector3r(origin.x +r*cos(t), origin.y + r*sin(t),
+                            origin.z));
+    t = t + increment_rate;
+  }
+
+  return path;
+
+
+
 }
