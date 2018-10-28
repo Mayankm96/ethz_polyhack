@@ -66,8 +66,8 @@ int main(int argc, char **argv)
     std::vector <Vector3r> path;
     // path = trajectories::generate_straight_line(Vector3r(5, 5, -5));
     // path = trajectories::generate_helical_path(10, 3, 3, 5, 500, Vector3r(0, 0, -6));
-    // path = trajectories::generate_epicycloidal_path(3.0, 2.0, 1000, Vector3r(0, 0, -3));
-    path = trajectories::generate_lemniscate_path(1.0, 500, Vector3r(0, 0, -3));
+    path = trajectories::generate_epicycloidal_path(5.0, 2.0, 100, Vector3r(0, 0, -6));
+    // path = trajectories::generate_lemniscate_path(5.0, 100, Vector3r(0, 0, -6));
 
 
     std::cout << "Performing straight line mission" << std::endl;
