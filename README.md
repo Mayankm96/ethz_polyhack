@@ -1,7 +1,11 @@
 # ethz_polyhack
 Repository for the drone hackathon: Polyhack
 
-__Contributors:__ Mayank Mittal, Francesco Milano, Yasser Belal
+__Collaborators:__ [Mayank Mittal](https://github.com/Mayankm96), [Francesco Milano](https://github.com/francescomilano172), [Yasser Belal](https://github.com/yasserbelal)
+
+## Trajector Generation Library
+
+![Different Generators](img/generators.png)
 
 ## Instructions to Setup
 
