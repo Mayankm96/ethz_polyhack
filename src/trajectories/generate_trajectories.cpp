@@ -1,6 +1,8 @@
 #include <trajectories/generate_trajectories.h>
 #include <fstream>
+#include <cmath>
 #include <sstream>
+#include <beehaving_drones/CommonStruct.h>
 
 // Read waypoints from the txt files at in_path
 std::vector <Vector3r> trajectories::read_trajectory_from_txt(std::string in_path)
@@ -77,10 +79,10 @@ std::vector<Vector3r> trajectories::generate_epicycloidal_path(double a, double 
   double t = 0;
   double increment_rate = 1.0f/num_of_waypoints;
 
-  while( t < 1)
+  while( t < 10*M_PI)
   {
     path.push_back(Vector3r(origin.x + 0.1*(a+b)*cos(t)-b*cos((a/b+1)*t), origin.y,
-                            origin.z + 0.1*(a+b)*sin(t)-b*sin((a/b+1)*t)));
+                            origin.z - 0.1*(a+b)*sin(t)-b*sin((a/b+1)*t)));
     t = t + increment_rate;
   }
 
@@ -95,11 +97,15 @@ std::vector<Vector3r> trajectories::generate_lemniscate_path(double a, long int 
   double increment_rate = 1.0f/num_of_waypoints;
   double r;
 
-  while( t < 1)
+  while( t < 2*M_PI)
   {
+    if(abs(t - M_PI/2) < M_PI/10 || abs(t - 3*M_PI/2) < M_PI/10)
+    {
+      t = t + M_PI/10;
+    }
     r = sqrt(pow(a, 2)*cos(2*t)/pow(cos(t), 4));
-    path.push_back(Vector3r(origin.x +r*cos(t), origin.y,
-                            origin.z + r*sin(t)));
+    path.push_back(Vector3r(origin.x + r*cos(t), origin.y,
+                            origin.z - r*sin(t)));
     t = t + increment_rate;
   }
 
