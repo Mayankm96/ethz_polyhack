@@ -65,14 +65,21 @@ int main(int argc, char **argv)
 
     std::vector <Vector3r> path;
     // path = trajectories::generate_straight_line(Vector3r(5, 5, -5));
-    path = trajectories::generate_helical_path(10, 3, 3, 5, 1000, Vector3r(0, 0, -6));
+    // path = trajectories::generate_helical_path(10, 3, 3, 5, 500, Vector3r(0, 0, -6));
+    // path = trajectories::generate_epicycloidal_path(3.0, 2.0, 1000, Vector3r(0, 0, -3));
+    // path = trajectories::generate_lemniscate_gerono_path(2.5, 10, Vector3r(0, 0, -4));
+    // path = trajectories::generate_fermat_path(0.75, 5, Vector3r(0, 0, -5));
+    // path = trajectories::generate_abs_sine_path(4, 5, Vector3r(0, 0, -3));
+    // path = trajectories::generate_hypocycloid_path(2.5, 1, 40, Vector3r(0, 0, -4));
+    // path = trajectories::generate_agnesi_path(5,  40, Vector3r(0, 0, -4));
+    path = trajectories::generate_epitrochoidal_path(3.0, 2.0, 2.0, 1000, Vector3r(0, 0, -5));
 
-    std::cout << "Performing straight line mission" << std::endl;
-    drone.perform_mission(path, 2.0);
+    std::cout << "Performing mission" << std::endl;
+    drone.perform_mission(path, 0.5);
 
-    sleep_for(seconds(150));
+    sleep_for(seconds(10));
 
-    // drone.return_to_home();
+    drone.return_to_home();
 
     if(drone.landing())
       return 1;
