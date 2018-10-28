@@ -42,4 +42,9 @@ namespace trajectories
 
   // Hypocycloid path:
   std::vector<Vector3r> generate_hypocycloid_path(double a=3.0, double b = 1.0, long int num_of_waypoints = 500, Vector3r origin = Vector3r(0, 0, 0));
+
+
+  // witch of agnesi path:
+  std::vector<Vector3r> generate_agnesi_path(double a=3.0, long int num_of_waypoints = 500, Vector3r origin = Vector3r(0, 0, 0));
+
 };

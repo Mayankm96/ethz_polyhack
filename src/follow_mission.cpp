@@ -70,9 +70,11 @@ int main(int argc, char **argv)
     // path = trajectories::generate_lemniscate_gerono_path(2.5, 10, Vector3r(0, 0, -4));
     // path = trajectories::generate_fermat_path(0.75, 5, Vector3r(0, 0, -5));
     // path = trajectories::generate_abs_sine_path(4, 5, Vector3r(0, 0, -3));
-    path = trajectories::generate_hypocycloid_path(2.5, 1, 40, Vector3r(0, 0, -4));
+    // path = trajectories::generate_hypocycloid_path(2.5, 1, 40, Vector3r(0, 0, -4));
+    // path = trajectories::generate_agnesi_path(5,  40, Vector3r(0, 0, -4));
+    path = trajectories::generate_epitrochoidal_path(double a=3.0, double b=2.0, double c=1.0, long int num_of_waypoints = 1000, Vector3r origin = Vector3r(0, 0, 0));
 
-    std::cout << "Performing straight line mission" << std::endl;
+    std::cout << "Performing mission" << std::endl;
     drone.perform_mission(path, 0.5);
 
     sleep_for(seconds(10));
