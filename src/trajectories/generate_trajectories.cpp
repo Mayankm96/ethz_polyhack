@@ -159,6 +159,25 @@ std::vector<Vector3r> trajectories::generate_fermat_path(double a, long int num_
   {
     r = sqrt(pow(a, 2)*t);
     path.push_back(Vector3r(origin.x +r*cos(t), origin.y + r*sin(t),
+                            origin.z));
+    t = t + increment_rate;
+  }
+
+  return path;
+}
+
+// Fermat path:
+std::vector<Vector3r> trajectories::generate_tornado_path(double a, long int num_of_waypoints, Vector3r origin)
+{
+  std::vector<Vector3r> path;
+  double t = 0;
+  double increment_rate = 1.0f/num_of_waypoints;
+  double r;
+
+  while( t < 10*M_PI )
+  {
+    r = sqrt(pow(a, 2)*t);
+    path.push_back(Vector3r(origin.x +r*cos(t), origin.y + r*sin(t),
                             origin.z - 0.15 * t));
     t = t + increment_rate;
   }

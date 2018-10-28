@@ -40,6 +40,11 @@ namespace trajectories
   // r^2 = a^2*theta
   std::vector<Vector3r> generate_fermat_path(double a=1.0, long int num_of_waypoints = 500, Vector3r origin = Vector3r(0, 0, 0));
 
+  // Tornado path:
+  // a is a constant of the parametric equation:
+  // r^2 = a^2*theta
+  std::vector<Vector3r> generate_tornado_path(double a=1.0, long int num_of_waypoints = 500, Vector3r origin = Vector3r(0, 0, 0));
+
   // Hypocycloid path:
   std::vector<Vector3r> generate_hypocycloid_path(double a=3.0, double b = 1.0, long int num_of_waypoints = 500, Vector3r origin = Vector3r(0, 0, 0));
 
