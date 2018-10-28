@@ -4,7 +4,7 @@
 namespace trajectories
 {
   // Read waypoints from the txt files at in_path
-  std::vector <Vector3r> read_trajectory_from_txt(std::string in_path);
+  std::vector <Vector3r> read_trajectory_from_txt(std::string in_path, double scale = 1.0);
 
   // Straight line trajectory
   std::vector <Vector3r> generate_straight_line(Vector3r goal);

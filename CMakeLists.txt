@@ -59,6 +59,24 @@ target_link_libraries(follow_mission
 
 ##################################
 
+add_executable(follow_mission_from_file
+    src/follow_mission_from_file.cpp
+    src/beehaving_drones/BaseDrone.cpp
+    src/beehaving_drones/Common.cpp
+    src/beehaving_drones/Console.cpp
+    src/beehaving_drones/CommonStruct.cpp
+    src/trajectories/generate_trajectories.cpp
+)
+
+target_link_libraries(follow_mission_from_file
+    dronecore
+    dronecore_telemetry
+    dronecore_mission
+    dronecore_action
+)
+
+##################################
+
 add_executable(test_behavior
     src/test_behavior.cpp
     src/beehaving_drones/BaseDrone.cpp
