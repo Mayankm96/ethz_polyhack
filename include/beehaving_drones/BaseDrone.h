@@ -63,6 +63,9 @@ class BaseDrone
     // get home geopoint
     GeoPoint get_home_geopoint();
 
+    // get drone position in NED
+    Vector3r get_position_NED();
+
     // convert GeoPoint into mission item
     std::shared_ptr<MissionItem> make_mission_item(GeoPoint waypoint,
                                                    float speed_m_s,

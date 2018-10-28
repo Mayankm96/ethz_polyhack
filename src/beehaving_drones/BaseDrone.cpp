@@ -196,6 +196,16 @@ GeoPoint BaseDrone::get_home_geopoint()
   return GeoPoint(position.latitude_deg, position.longitude_deg, position.relative_altitude_m);
 }
 
+
+// get drone position in NED
+Vector3r BaseDrone::get_position_NED()
+{
+  Telemetry::Position position = telemetry_->position();
+  GeoPoint position_geo(position.latitude_deg , position.longitude_deg, position.relative_altitude_m);
+  GeoPoint home = get_home_geopoint();
+  return GeodeticToNedFast(position_geo, home);
+}
+
 // convert GeoPoint into mission item
 std::shared_ptr<MissionItem> BaseDrone::make_mission_item(GeoPoint waypoint,
                                                float speed_m_s = 1.0,
