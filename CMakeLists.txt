@@ -65,7 +65,7 @@ add_executable(test_behavior
     src/beehaving_drones/Common.cpp
     src/beehaving_drones/Console.cpp
     src/beehaving_drones/CommonStruct.cpp
-    src/trajectories/generate_trajectories.cpp
+    src/trajectories/generate_trajectories_with_goals.cpp
 )
 
 target_link_libraries(test_behavior
