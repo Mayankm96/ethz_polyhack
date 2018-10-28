@@ -1,6 +1,6 @@
 #include <beehaving_drones/BaseDrone.h>
 #include <beehaving_drones/Console.h>
-#include <trajectories/generate_trajectories.h>
+#include <trajectories/generate_trajectories_with_goals.h>
 
 #include <functional>
 #include <future>
@@ -46,17 +46,31 @@ int main(int argc, char **argv)
 
     std::vector <Vector3r> path;
 
-    // path = trajectories::generate_straight_line(Vector3r(5, 5, -5));
-    // path = trajectories::generate_helical_path(10, 3, 3, 5, 500, Vector3r(0, 0, -6));
-    // path = trajectories::generate_epicycloidal_path(3.0, 2.0, 1000, Vector3r(0, 0, -3));
-    // path = trajectories::generate_lemniscate_gerono_path(2.5, 10, Vector3r(0, 0, -4));
-    // path = trajectories::generate_fermat_path(0.75, 5, Vector3r(0, 0, -5));
-    // path = trajectories::generate_abs_sine_path(4, 5, Vector3r(0, 0, -3));
-    // path = trajectories::generate_hypocycloid_path(2.5, 1, 40, Vector3r(0, 0, -4));
-    // path = trajectories::generate_agnesi_path(5,  40, Vector3r(0, 0, -4));
-    path = trajectories::generate_epitrochoidal_path(3.0, 2.0, 2.0, 1000, Vector3r(0, 0, -5));
+    Vector3r pose = drone.get_position_NED();
+    // fancy takeoff
+    path = trajectories_with_goals::generate_tornado_path(Vector3r(0, 0, -6), pose);
 
-    std::cout << "Performing mission" << std::endl;
+    std::cout << "Performing mission 1" << std::endl;
+    drone.perform_mission(path, 0.5);
+
+    sleep_for(seconds(10));
+
+    pose = drone.get_position_NED();
+    // fance set point movement
+    path.clear();
+    path = trajectories_with_goals::generate_helical_path(Vector3r(5, 5, -4), pose);
+
+    std::cout << "Performing mission 2" << std::endl;
+    drone.perform_mission(path, 0.5);
+
+    sleep_for(seconds(10));
+
+    pose = drone.get_position_NED();
+    // fancy humming
+    path.clear();
+    path = trajectories_with_goals::generate_lemniscate_gerono_path(5, pose);
+
+    std::cout << "Performing mission 3" << std::endl;
     drone.perform_mission(path, 0.5);
 
     sleep_for(seconds(10));
