@@ -185,3 +185,22 @@ std::vector<Vector3r> trajectories::generate_hypocycloid_path(double a, double b
 
   return path;
 }
+
+std::vector<Vector3r> trajectories::generate_agnesi_path(double a, long int num_of_waypoints, Vector3r origin)
+{
+  std::vector<Vector3r> path;
+  double t = -2;
+  double increment_rate = 1.0f/num_of_waypoints;
+
+  while( t < 2 )
+  {
+    double x = a * t;
+    double y = a / (1 + t * t);
+
+    path.push_back(Vector3r(origin.x + x, origin.y,
+                            origin.z - y));
+    t = t + increment_rate;
+  }
+
+  return path;
+}
